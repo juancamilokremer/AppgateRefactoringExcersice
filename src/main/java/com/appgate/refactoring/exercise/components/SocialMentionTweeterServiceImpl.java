@@ -2,7 +2,8 @@ package com.appgate.refactoring.exercise.components;
 
 import org.springframework.stereotype.Component;
 
-import com.appgate.refactoring.exercise.model.SocialMentionBuilder;
+import com.appgate.refactoring.exercise.exceptions.NotFoundException;
+import com.appgate.refactoring.exercise.model.SocialMention;
 import com.appgate.refactoring.exercise.model.entities.TweeterEntity;
 import com.appgate.refactoring.exercise.services.RiskService;
 import com.appgate.refactoring.exercise.services.SocialMentionService;
@@ -23,11 +24,18 @@ public class SocialMentionTweeterServiceImpl implements SocialMentionService {
 	}
 
 	@Override
-	public String analyze(SocialMentionBuilder builder) {
-		String formatedMessage = "tweeterMessage: " + builder.getMessage();
-		double tweeterScore = TweeterAnalyzer.analyzeTweet(formatedMessage, builder.getTweeterUrl(),
-				builder.getTweeterAccount());
-		createTweet(tweeterScore, formatedMessage, builder.getTweeterUrl(), builder.getTweeterAccount());
+	public String analyze(SocialMention socialMention) {
+		if(socialMention.getTweeterAccount() == null) {
+    		throw new NotFoundException("Error, Tweeter account must be present");
+    	}
+		
+		String formatedMessage = "tweeterMessage: " + socialMention.getMessage();
+		
+		double tweeterScore = TweeterAnalyzer.analyzeTweet(formatedMessage, socialMention.getTweeterUrl(),
+				socialMention.getTweeterAccount());
+		
+		createTweet(tweeterScore, formatedMessage, socialMention.getTweeterUrl(), socialMention.getTweeterAccount());
+		
 		Risks risk = riskService.calculate(tweeterScore);
 
 		if (risk != null) {

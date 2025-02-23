@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.appgate.refactoring.exercise.model.SocialMentionBuilder;
+import com.appgate.refactoring.exercise.exceptions.NotFoundException;
+import com.appgate.refactoring.exercise.model.SocialMention;
 import com.appgate.refactoring.exercise.model.entities.FacebookEntity;
 import com.appgate.refactoring.exercise.services.RiskService;
 import com.appgate.refactoring.exercise.services.SocialMentionService;
@@ -26,16 +27,17 @@ public class SocialMentionFacebookServiceImpl implements SocialMentionService {
 	}
 
 	@Override
-	public String analyze(SocialMentionBuilder socialMention) {
-		double score = 0;
+	public String analyze(SocialMention socialMention) {
+		if(socialMention.getFacebookAccount() == null) {
+    		throw new NotFoundException("Error, Facebook account must be present");
+    	}
 
 		String comment = concatComments(socialMention.getFacebookComments());
 
 		String formatedMessage = formatMessage(socialMention.getMessage(), comment);
 
-		score = scoreComments(formatedMessage);
+		double score = scoreComments(formatedMessage);
 
-		// Analyze facebook post (if facebook is already low then skip this analysis)
 		if (score > -100) {
 			score = FacebookAnalyzer.analyzePost(formatedMessage, socialMention.getFacebookAccount());
 			FacebookEntity entity = new FacebookEntity(score, formatedMessage, socialMention.getFacebookAccount());

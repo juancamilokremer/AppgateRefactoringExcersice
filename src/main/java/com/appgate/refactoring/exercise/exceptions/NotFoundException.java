@@ -1,5 +1,6 @@
 package com.appgate.refactoring.exercise.exceptions;
 
+@SuppressWarnings("serial")
 public class NotFoundException extends RuntimeException {
 	private static final String DESCRIPTION = "Bad Request Exception (400)";
 

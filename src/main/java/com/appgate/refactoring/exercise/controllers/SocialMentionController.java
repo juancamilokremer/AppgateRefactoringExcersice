@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appgate.refactoring.exercise.model.SocialMention;
-import com.appgate.refactoring.exercise.model.SocialMentionBuilder;
-import com.appgate.refactoring.exercise.services.SocialMentionBuilderFactory;
 import com.appgate.refactoring.exercise.services.SocialMentionFactory;
 import com.appgate.refactoring.exercise.services.SocialMentionService;
 import com.appgate.refactoring.exercise.services.enumerations.SocialTypes;
@@ -19,15 +17,11 @@ import com.appgate.refactoring.exercise.services.enumerations.SocialTypes;
 public class SocialMentionController {
 	@Autowired
 	SocialMentionFactory socialMentionFactory;
-	@Autowired
-	SocialMentionBuilderFactory socialMentionBuilderFactory;
 	
 	@PostMapping(value = "/analyze", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String analyze(@RequestBody SocialMention socialMention) {
-		SocialMentionBuilder socialMentionBuilder = socialMentionBuilderFactory.getSocialMentionBuilder(socialMention);
-		
 		SocialMentionService service = SocialMentionFactory.getSocialMentionService(SocialTypes.valueOf(socialMention.getType()));
 		
-		return service.analyze(socialMentionBuilder);
+		return service.analyze(socialMention);
 	}
 }

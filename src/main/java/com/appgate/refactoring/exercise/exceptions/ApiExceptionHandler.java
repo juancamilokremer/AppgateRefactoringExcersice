@@ -12,14 +12,14 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ApiExceptionHandler {
 	@ResponseBody
 	@ExceptionHandler(NotFoundException.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ErrorMessage notFoundRequestException(HttpServletRequest request, Exception exception) {
 		return new ErrorMessage(exception, request.getRequestURI());
 	}
 
 	@ResponseBody
 	@ExceptionHandler(Exception.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorMessage fatalErrorUnexpectedException(HttpServletRequest request, Exception exception) {
 		return new ErrorMessage(exception, request.getRequestURI());
 	}
