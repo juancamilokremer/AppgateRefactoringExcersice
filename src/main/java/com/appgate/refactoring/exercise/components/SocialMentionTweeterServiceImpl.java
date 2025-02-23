@@ -26,8 +26,8 @@ public class SocialMentionTweeterServiceImpl implements SocialMentionService {
 	@Override
 	public String analyze(SocialMention socialMention) {
 		if(socialMention.getTweeterAccount() == null) {
-    		throw new NotFoundException("Error, Tweeter account must be present");
-    	}
+			throw new NotFoundException("Error, Tweeter account must be present");
+		}
 		
 		String formatedMessage = "tweeterMessage: " + socialMention.getMessage();
 		

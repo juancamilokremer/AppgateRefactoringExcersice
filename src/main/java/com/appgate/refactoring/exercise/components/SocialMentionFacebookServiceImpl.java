@@ -29,8 +29,8 @@ public class SocialMentionFacebookServiceImpl implements SocialMentionService {
 	@Override
 	public String analyze(SocialMention socialMention) {
 		if(socialMention.getFacebookAccount() == null) {
-    		throw new NotFoundException("Error, Facebook account must be present");
-    	}
+			throw new NotFoundException("Error, Facebook account must be present");
+		}
 
 		String comment = concatComments(socialMention.getFacebookComments());
 
