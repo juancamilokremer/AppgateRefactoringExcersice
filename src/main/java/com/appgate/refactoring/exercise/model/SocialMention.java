@@ -8,6 +8,7 @@ public class SocialMention {
 	private String tweeterAccount;
 	private String creationDate;
 	private String tweeterUrl;
+	private String type;
 	private List<String> facebookComments;
 
 	public String getMessage() {
@@ -48,6 +49,14 @@ public class SocialMention {
 
 	public void setTweeterUrl(String tweeterUrl) {
 		this.tweeterUrl = tweeterUrl;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public List<String> getFacebookComments() {
